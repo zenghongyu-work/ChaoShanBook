@@ -2,6 +2,8 @@ package com.example.controller.video;
 
 import com.example.app.VideoApp;
 import com.example.controller.common.Operator;
+import com.example.controller.common.Result;
+import com.example.controller.user.UserResponse;
 import com.example.controller.video.VideoRequest.*;
 import com.example.domain.video.Video;
 import com.example.infrastructure.utils.DataUtils;
@@ -28,25 +30,31 @@ public class VideoController {
 
     @ApiOperation(value = "创建")
     @PostMapping
-    public Video add(@RequestBody Create request) {
+    public Result add(@RequestBody Create request) {
         Video video = Video.builder().build();
         BeanUtils.copyProperties(request, video);
         video.setCreateBy(operator.getId());
         video.setCreateAt(DataUtils.getCurrentDataTime());
         videoApp.add(video);
-        return video;
+        return Result.builder()
+                .data(video)
+                .build();
     }
 
     @ApiOperation(value = "根据Id获取")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "短视频Id", required = true, dataType = "Integer", paramType = "path")})
     @GetMapping("/{id}")
-    public Video getById(@PathVariable Integer id) {
-        return videoApp.getById(id);
+    public Result getById(@PathVariable Integer id) {
+        return Result.builder()
+                .data(videoApp.getById(id))
+                .build();
     }
 
     @ApiOperation(value = "获取列表")
     @GetMapping
-    public List<Video> list() {
-        return videoApp.list();
+    public Result list() {
+        return Result.builder()
+                .data(videoApp.list())
+                .build();
     }
 }

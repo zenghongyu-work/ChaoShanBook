@@ -15,18 +15,6 @@ public class UserRequest {
 
         @ApiModelProperty("密码")
         private String pd;
-
-        @ApiModelProperty("电话")
-        private String phone;
-
-        @ApiModelProperty("性别")
-        private Gender gender;
-
-        @ApiModelProperty("头像")
-        private String icon;
-
-        @ApiModelProperty("地址")
-        private Location location;
     }
 
     @Data

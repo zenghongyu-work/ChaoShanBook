@@ -1,5 +1,6 @@
 package com.example.controller.exception;
 
+import com.example.controller.common.Result;
 import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -31,7 +32,10 @@ public class ErrorController extends BasicErrorController {
         }
 
         return ResponseEntity.status(status)
-                .body(ControllerExceptionHandler.transform((String) body.get("message")));
+                .body(Result.builder()
+                        .code(0)
+                        .msg((String) body.get("message"))
+                        .build());
     }
 
     @Override

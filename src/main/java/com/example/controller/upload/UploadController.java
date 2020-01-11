@@ -1,6 +1,8 @@
 package com.example.controller.upload;
 
 
+import com.example.controller.common.Result;
+import com.example.controller.user.UserResponse;
 import com.example.domain.execption.BusinessException;
 import com.example.domain.execption.NotFoundException;
 import io.swagger.annotations.Api;
@@ -39,7 +41,7 @@ public class UploadController {
     @ApiOperation(value = "视频上传")
     @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "视频文件", required = true, dataType = "file", paramType = "form")})
     @PostMapping("/video")
-    public UploadResponse uploadVideo(@RequestParam("file") MultipartFile file) {
+    public Result uploadVideo(@RequestParam("file") MultipartFile file) {
         String fileExt = file.getOriginalFilename()
                 .substring(file.getOriginalFilename().lastIndexOf(".") + 1)
                 .toLowerCase();
@@ -57,8 +59,8 @@ public class UploadController {
             throw new BusinessException(String.format("上传视频失败：%s", e.getMessage()));
         }
 
-        return UploadResponse.builder()
-                .path(newVideoName)
+        return Result.builder()
+                .data(UploadResponse.builder().path(newVideoName).build())
                 .build();
     }
 

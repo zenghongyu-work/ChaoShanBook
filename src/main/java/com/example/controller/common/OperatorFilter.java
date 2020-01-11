@@ -17,7 +17,7 @@ import java.util.List;
 import static com.example.domain.common.Constant.TOKEN;
 
 @WebFilter
-@Order(0)
+@Order(5)
 public class OperatorFilter implements Filter {
 
     public static final List<String> BLACK_PATH = Arrays.asList("PUT /chaoshanbook/user/nickname",

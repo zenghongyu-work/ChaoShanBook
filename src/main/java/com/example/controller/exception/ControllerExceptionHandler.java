@@ -1,6 +1,7 @@
 package com.example.controller.exception;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.controller.common.Result;
 import com.example.domain.execption.BusinessException;
 import com.example.domain.execption.NotFoundException;
 import com.example.domain.execption.UnauthorizedException;
@@ -20,17 +21,26 @@ public class ControllerExceptionHandler {
             BusinessException businessException = (BusinessException) e;
             return ResponseEntity
                     .status(HttpStatus.PRECONDITION_FAILED)
-                    .body(transform(businessException.getMessage()));
+                    .body(Result.builder()
+                            .code(0)
+                            .msg(businessException.getMessage())
+                            .build());
         } else if (e instanceof UnauthorizedException) {
             UnauthorizedException businessException = (UnauthorizedException) e;
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(transform(businessException.getMessage()));
+                    .body(Result.builder()
+                            .code(0)
+                            .msg(businessException.getMessage())
+                            .build());
         } else if (e instanceof NotFoundException) {
             NotFoundException businessException = (NotFoundException) e;
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
-                    .body(transform(businessException.getMessage()));
+                    .body(Result.builder()
+                            .code(0)
+                            .msg(businessException.getMessage())
+                            .build());
         }
         e.printStackTrace();
         return ResponseEntity
