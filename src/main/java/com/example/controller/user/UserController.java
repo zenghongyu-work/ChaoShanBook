@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.controller.user.UserRequest.*;
 
-@Api("用户接口")
+@Api(tags = {"用户接口"})
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -24,7 +24,7 @@ public class UserController {
     private Operator operator;
 
     @ApiOperation(value = "用户注册")
-    @PostMapping("/register")
+    @PostMapping
     public User register(@RequestBody Register request) {
         User user = User.builder().build();
         BeanUtils.copyProperties(request, user);

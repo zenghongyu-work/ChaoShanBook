@@ -16,9 +16,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: /chaoshanbook
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
 mybatis:
   # 配置mapper放置的位置，类路径下的mapper/下的所有Mapper.xml结尾的文件
@@ -27,3 +30,6 @@ mybatis:
     # 处理枚举类型的handler
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+upload-file-path:
+  video: /APP/upload/video

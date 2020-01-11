@@ -1,4 +1,4 @@
-package com.example.infrastructure.persistence.User;
+package com.example.infrastructure.persistence.user;
 
 import com.example.domain.user.User;
 import com.example.domain.user.valueobject.Gender;

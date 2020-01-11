@@ -1,4 +1,4 @@
-package com.example.infrastructure.persistence.User;
+package com.example.infrastructure.persistence.user;
 
 import com.example.infrastructure.persistence.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

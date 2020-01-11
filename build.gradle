@@ -34,10 +34,11 @@ dependencies {
 	implementation 'io.springfox:springfox-swagger-ui:2.5.0'
 	implementation 'com.alibaba:fastjson:1.2.58'
 	implementation 'org.apache.commons:commons-lang3:3.9'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+	implementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testImplementation 'org.springframework.security:spring-security-test'

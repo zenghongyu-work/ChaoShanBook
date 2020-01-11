@@ -20,7 +20,8 @@ import static com.example.domain.common.Constant.TOKEN;
 @Order(0)
 public class OperatorFilter implements Filter {
 
-    public static final List<String> BLACK_PATH = Arrays.asList("/chaoshanbook/user/nickname");
+    public static final List<String> BLACK_PATH = Arrays.asList("PUT /chaoshanbook/user/nickname",
+            "POST /chaoshanbook/video");
 
     @Autowired
     private Operator operator;
@@ -29,7 +30,7 @@ public class OperatorFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
-        if (!BLACK_PATH.contains(httpServletRequest.getRequestURI())) {
+        if (!BLACK_PATH.contains(httpServletRequest.getMethod() + " " + httpServletRequest.getRequestURI())) {
             chain.doFilter(request, response);
         } else {
             String token = httpServletRequest.getHeader(TOKEN);
