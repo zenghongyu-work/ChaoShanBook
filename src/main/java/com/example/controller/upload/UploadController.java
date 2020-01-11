@@ -2,6 +2,7 @@ package com.example.controller.upload;
 
 
 import com.example.domain.execption.BusinessException;
+import com.example.domain.execption.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -80,8 +81,7 @@ public class UploadController {
             request.setAttribute(NonStaticResourceHttpRequestHandler.ATTR_FILE, filePath);
             nonStaticResourceHttpRequestHandler.handleRequest(request, response);
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
+            throw new NotFoundException();
         }
     }
 }

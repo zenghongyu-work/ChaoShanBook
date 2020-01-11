@@ -2,6 +2,7 @@ package com.example.controller.exception;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.domain.execption.BusinessException;
+import com.example.domain.execption.NotFoundException;
 import com.example.domain.execption.UnauthorizedException;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,11 @@ public class ControllerExceptionHandler {
             UnauthorizedException businessException = (UnauthorizedException) e;
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
+                    .body(transform(businessException.getMessage()));
+        } else if (e instanceof NotFoundException) {
+            NotFoundException businessException = (NotFoundException) e;
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
                     .body(transform(businessException.getMessage()));
         }
         e.printStackTrace();
