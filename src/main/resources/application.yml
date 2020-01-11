@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/chaoshanbook?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: ChaoShanBook
+    password: ChaoShanBook=2019
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: MySQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+server:
+  port: 80
+  servlet:
+    context-path: /chaoshanbook
+
+mybatis:
+  # 配置mapper放置的位置，类路径下的mapper/下的所有Mapper.xml结尾的文件
+  mapper-locations: classpath:mapper/*/*Mapper.xml
+  configuration:
+    # 处理枚举类型的handler
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
