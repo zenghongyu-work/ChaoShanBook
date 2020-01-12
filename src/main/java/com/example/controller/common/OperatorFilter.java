@@ -21,7 +21,7 @@ import static com.example.domain.common.Constant.TOKEN;
 public class OperatorFilter implements Filter {
 
     public static final List<String> BLACK_PATH = Arrays.asList("PUT /chaoshanbook/user/nickname",
-            "POST /chaoshanbook/video", "POST /chaoshanbook/article");
+            "POST /chaoshanbook/video", "POST /chaoshanbook/article", "GET /chaoshanbook/user");
 
     @Autowired
     private Operator operator;

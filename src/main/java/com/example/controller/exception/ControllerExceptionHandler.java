@@ -20,7 +20,7 @@ public class ControllerExceptionHandler {
         if (e instanceof BusinessException) {
             BusinessException businessException = (BusinessException) e;
             return ResponseEntity
-                    .status(HttpStatus.PRECONDITION_FAILED)
+                    .status(HttpStatus.OK)
                     .body(Result.builder()
                             .code(0)
                             .msg(businessException.getMessage())
@@ -28,7 +28,7 @@ public class ControllerExceptionHandler {
         } else if (e instanceof UnauthorizedException) {
             UnauthorizedException businessException = (UnauthorizedException) e;
             return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.OK)
                     .body(Result.builder()
                             .code(0)
                             .msg(businessException.getMessage())
@@ -36,7 +36,7 @@ public class ControllerExceptionHandler {
         } else if (e instanceof NotFoundException) {
             NotFoundException businessException = (NotFoundException) e;
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
+                    .status(HttpStatus.OK)
                     .body(Result.builder()
                             .code(0)
                             .msg(businessException.getMessage())
@@ -44,13 +44,10 @@ public class ControllerExceptionHandler {
         }
         e.printStackTrace();
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(transform(e.getMessage()));
-    }
-
-    public static JSONObject transform(String message) {
-        JSONObject object = new JSONObject();
-        object.put("error", message);
-        return object;
+                .status(HttpStatus.OK)
+                .body(Result.builder()
+                        .code(0)
+                        .msg(e.getMessage())
+                        .build());
     }
 }

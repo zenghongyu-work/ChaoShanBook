@@ -28,7 +28,7 @@ public class ErrorController extends BasicErrorController {
         Map<String, Object> body = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));
         HttpStatus status = getStatus(request);
         if (!Strings.isNullOrEmpty((String) body.get("message")) && body.get("message").equals("请先登录")) {
-            status = HttpStatus.UNAUTHORIZED;
+            status = HttpStatus.OK;
         }
 
         return ResponseEntity.status(status)

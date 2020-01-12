@@ -59,6 +59,17 @@ public class UserController {
                 .build();
     }
 
+    @ApiOperation(value = "根据Id获取用户详情")
+    @GetMapping("/{id}")
+    public Result getById(@PathVariable("id") Integer id) {
+        User user = userApp.getById(id);
+        SimpleUser simpleUser = SimpleUser.builder().build();
+        BeanUtils.copyProperties(user, simpleUser);
+        return Result.builder()
+                .data(simpleUser)
+                .build();
+    }
+
     @ApiOperation(value = "更新昵称")
     @PutMapping("/nickname")
     public Result updateNickname(@RequestBody UpdateNickname request) {
