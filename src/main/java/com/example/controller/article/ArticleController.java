@@ -1,10 +1,10 @@
-package com.example.controller.video;
+package com.example.controller.article;
 
-import com.example.app.VideoApp;
+import com.example.app.ArticleApp;
 import com.example.controller.common.Operator;
 import com.example.controller.common.Result;
-import com.example.controller.video.VideoRequest.*;
-import com.example.domain.video.Video;
+import com.example.controller.article.ArticleRequest.*;
+import com.example.domain.article.Article;
 import com.example.infrastructure.utils.DataUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,36 +14,36 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = {"短视频接口"})
+@Api(tags = {"文章接口"})
 @RestController
-@RequestMapping("/video")
-public class VideoController {
+@RequestMapping("/article")
+public class ArticleController {
 
     @Autowired
-    private VideoApp videoApp;
+    private ArticleApp articleApp;
 
     @Autowired
     private Operator operator;
 
     @ApiOperation(value = "创建")
     @PostMapping
-    public Result add(@RequestBody CreateVideo request) {
-        Video video = Video.builder().build();
-        BeanUtils.copyProperties(request, video);
-        video.setCreateBy(operator.getId());
-        video.setCreateAt(DataUtils.getCurrentDataTime());
-        videoApp.add(video);
+    public Result add(@RequestBody CreateArticle request) {
+        Article article = Article.builder().build();
+        BeanUtils.copyProperties(request, article);
+        article.setCreateBy(operator.getId());
+        article.setCreateAt(DataUtils.getCurrentDataTime());
+        articleApp.add(article);
         return Result.builder()
-                .data(video)
+                .data(article)
                 .build();
     }
 
     @ApiOperation(value = "根据Id获取")
-    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "短视频Id", required = true, dataType = "Integer", paramType = "path")})
+    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "文章Id", required = true, dataType = "Integer", paramType = "path")})
     @GetMapping("/{id}")
     public Result getById(@PathVariable Integer id) {
         return Result.builder()
-                .data(videoApp.getById(id))
+                .data(articleApp.getById(id))
                 .build();
     }
 
@@ -51,7 +51,7 @@ public class VideoController {
     @GetMapping
     public Result list() {
         return Result.builder()
-                .data(videoApp.list())
+                .data(articleApp.list())
                 .build();
     }
 }

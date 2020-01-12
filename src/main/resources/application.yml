@@ -33,3 +33,4 @@ mybatis:
 
 upload-file-path:
   video: /APP/upload/video
+  picture: /APP/upload/picture

@@ -30,11 +30,11 @@ public class VideoRepositoryImpl implements VideoRepository {
     public Optional<Video> getById(Integer id) {
         Example example = new Example(VideoDbo.class);
         example.createCriteria().andEqualTo("id", id);
-        VideoDbo userDbo = videoMapper.selectOneByExample(example);
-        if (userDbo == null) {
+        VideoDbo videoDbo = videoMapper.selectOneByExample(example);
+        if (videoDbo == null) {
             return Optional.empty();
         } else {
-            return Optional.of(videoMapper.selectOneByExample(example).toModule(Video.class));
+            return Optional.of(videoDbo.toModule(Video.class));
         }
     }
 
@@ -44,7 +44,7 @@ public class VideoRepositoryImpl implements VideoRepository {
         example.setOrderByClause("create_at desc");
         List<VideoDbo> videoDbos = videoMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(videoDbos)) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         } else {
             return videoDbos.stream()
                     .map(videoDbo -> videoDbo.toModule(Video.class))

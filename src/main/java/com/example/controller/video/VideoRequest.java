@@ -9,7 +9,7 @@ import lombok.Data;
 public class VideoRequest {
 
     @Data
-    public static class Create {
+    public static class CreateVideo {
 
         @ApiModelProperty("标题")
         private String title;

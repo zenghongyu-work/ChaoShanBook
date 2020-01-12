@@ -3,8 +3,6 @@ package com.example.infrastructure.persistence.article;
 import com.example.domain.article.Article;
 import com.example.domain.article.ArticleRepository;
 import com.example.domain.article.valueobject.Picture;
-import com.example.domain.video.Video;
-import com.example.domain.video.VideoRepository;
 import com.example.infrastructure.persistence.article.valueobject.PictureDbo;
 import com.example.infrastructure.persistence.article.valueobject.PictureMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,52 +29,65 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         ArticleDbo dbo = ArticleDbo.fromModule(article, ArticleDbo.class);
         articleMapper.insert(dbo);
         article.setId(dbo.getId());
-        refreshPicture(article);
+        refreshPictures(article);
         return article;
     }
 
-    public void refreshPicture(Article article) {
-        article.getPictures().stream()
-                .map(picture -> PictureDbo.builder()
-                        .articleId(article.getId())
-                        .path(picture.getPath())
-                        .build()).collect(Collectors.toList());
+    public void refreshPictures(Article article) {
+        Example example = new Example(PictureDbo.class);
+        example.createCriteria().andEqualTo("articleId", article.getId());
+        pictureMapper.deleteByExample(example);
+
+        article.getPictures().stream().forEach(picture ->
+                pictureMapper.insert(PictureDbo.builder()
+                .articleId(article.getId())
+                .path(picture.getPath())
+                .build()));
+    }
+
+    public List<Picture> getPictures(Article article) {
+        Example example = new Example(PictureDbo.class);
+        example.createCriteria().andEqualTo("articleId", article.getId());
+        List<PictureDbo> pictureDbos =  pictureMapper.selectByExample(example);
+
+        if (CollectionUtils.isEmpty(pictureDbos)) {
+            return Collections.emptyList();
+        } else {
+            return pictureDbos.stream()
+                    .map(pictureDbo -> pictureDbo.toModule(Picture.class))
+                    .collect(Collectors.toList());
+        }
     }
 
     @Override
     public Optional<Article> getById(Integer id) {
-        return Optional.empty();
+        Example example = new Example(ArticleDbo.class);
+        example.createCriteria().andEqualTo("id", id);
+        ArticleDbo articleDbo = articleMapper.selectOneByExample(example);
+        if (articleDbo == null) {
+            return Optional.empty();
+        } else {
+            Article article = articleDbo.toModule(Article.class);
+            article.setPictures(getPictures(article));
+            return Optional.of(article);
+        }
     }
 
     @Override
     public List<Article> list() {
-        return null;
+        Example example = new Example(ArticleDbo.class);
+        example.setOrderByClause("create_at desc");
+        List<ArticleDbo> articleDbos = articleMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(articleDbos)) {
+            return Collections.emptyList();
+        } else {
+            return articleDbos.stream()
+                    .map(articleDbo -> {
+                        Article article = articleDbo.toModule(Article.class);
+                        article.setPictures(getPictures(article));
+                        return article;
+                    }).collect(Collectors.toList());
+        }
     }
-
-//    @Override
-//    public Optional<Video> getById(Integer id) {
-//        Example example = new Example(PictureDbo.class);
-//        example.createCriteria().andEqualTo("id", id);
-//        PictureDbo userDbo = articleMapper.selectOneByExample(example);
-//        if (userDbo == null) {
-//            return Optional.empty();
-//        } else {
-//            return Optional.of(articleMapper.selectOneByExample(example).toModule(Video.class));
-//        }
-//    }
-
-//    @Override
-//    public List<Video> list() {
-//        Example example = new Example(PictureDbo.class);
-//        example.setOrderByClause("create_at desc");
-//        List<PictureDbo> articleDbos = articleMapper.selectByExample(example);
-//        if (CollectionUtils.isEmpty(articleDbos)) {
-//            return Collections.EMPTY_LIST;
-//        } else {
-//            return articleDbos.stream()
-//                    .map(articleDbo -> articleDbo.toModule(Video.class))
-//                    .collect(Collectors.toList());
-//        }
-//    }
 
 }

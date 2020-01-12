@@ -1,6 +1,7 @@
 package com.example.domain.user;
 
 import com.example.domain.execption.BusinessException;
+import com.example.domain.execption.NotFoundException;
 import com.example.infrastructure.utils.JwtUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     public User getById(Integer id) {
-        return userRepository.getById(id).orElseThrow(() -> new BusinessException(String.format("用户不存在（%d）", id)));
+        return userRepository.getById(id).orElseThrow(() -> new NotFoundException(String.format("用户不存在（%d）", id)));
     }
 
     public User updateNickname(User user) {

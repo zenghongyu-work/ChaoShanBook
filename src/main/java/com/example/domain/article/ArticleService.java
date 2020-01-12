@@ -1,6 +1,6 @@
 package com.example.domain.article;
 
-import com.example.domain.execption.BusinessException;
+import com.example.domain.execption.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class ArticleService {
     }
 
     public Article getById(Integer id) {
-        return articleRepository.getById(id).orElseThrow(() -> new BusinessException(String.format("文章不存在（%d）", id)));
+        return articleRepository.getById(id).orElseThrow(() -> new NotFoundException(String.format("文章不存在（%d）", id)));
     }
 
     public List<Article> list() {
