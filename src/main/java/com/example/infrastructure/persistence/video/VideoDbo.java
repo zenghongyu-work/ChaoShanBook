@@ -19,6 +19,7 @@ public class VideoDbo extends BaseDbo {
     @KeySql(useGeneratedKeys = true)
     private Integer id;
     private String title;
+    private String content;
     private String video;
     private Integer praiseCount;
     private Integer createBy;

@@ -17,6 +17,9 @@ public class Video {
     private String title = "";
 
     @Builder.Default
+    private String content = "";
+
+    @Builder.Default
     private String video = "";
 
     @Builder.Default

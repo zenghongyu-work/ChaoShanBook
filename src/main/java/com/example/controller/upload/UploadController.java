@@ -47,31 +47,31 @@ public class UploadController {
     @Autowired
     private NonStaticResourceHttpRequestHandler nonStaticResourceHttpRequestHandler;
 
-    @ApiOperation(value = "视频上传")
-    @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "视频文件", required = true, dataType = "file", paramType = "form")})
-    @PostMapping("/video")
-    public Result uploadVideo(@RequestParam("file") MultipartFile file) {
-        String fileExt = file.getOriginalFilename()
-                .substring(file.getOriginalFilename().lastIndexOf(".") + 1)
-                .toLowerCase();
-        if (!VIDEO_FORMATS.contains(fileExt)) {
-            throw new BusinessException("占只支持MP4格式视频上传");
-        }
-        // 重构文件名称
-        String pikId = UUID.randomUUID().toString().replaceAll("-", "");
-        String newVideoName = pikId + "." + fileExt;
-        File fileSave = new File(videoFilePath, newVideoName);
-        try {
-            file.transferTo(fileSave);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new BusinessException(String.format("上传视频失败：%s", e.getMessage()));
-        }
-
-        return Result.builder()
-                .data(UploadResponse.Video.builder().path(newVideoName).build())
-                .build();
-    }
+//    @ApiOperation(value = "视频上传")
+//    @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "视频文件", required = true, dataType = "file", paramType = "form")})
+//    @PostMapping("/video")
+//    public Result uploadVideo(@RequestParam("file") MultipartFile file) {
+//        String fileExt = file.getOriginalFilename()
+//                .substring(file.getOriginalFilename().lastIndexOf(".") + 1)
+//                .toLowerCase();
+//        if (!VIDEO_FORMATS.contains(fileExt)) {
+//            throw new BusinessException("占只支持MP4格式视频上传");
+//        }
+//        // 重构文件名称
+//        String pikId = UUID.randomUUID().toString().replaceAll("-", "");
+//        String newVideoName = pikId + "." + fileExt;
+//        File fileSave = new File(videoFilePath, newVideoName);
+//        try {
+//            file.transferTo(fileSave);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new BusinessException(String.format("上传视频失败：%s", e.getMessage()));
+//        }
+//
+//        return Result.builder()
+//                .data(UploadResponse.Video.builder().path(newVideoName).build())
+//                .build();
+//    }
 
     @ApiOperation(value = "视频获取")
     @ApiImplicitParams({@ApiImplicitParam(name = "path", value = "视频路径", required = true, dataType = "String", paramType = "path")})
@@ -101,38 +101,38 @@ public class UploadController {
         }
     }
 
-    @ApiOperation(value = "图片上传")
-    @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "图片文件", required = true, dataType = "file", paramType = "form")})
-    @PostMapping("/picture")
-    public Result uploadPicture(@RequestParam("file") MultipartFile[] file) {
-        List<String> paths = new ArrayList<>();
-        if (!ArrayUtils.isEmpty(file)) {
-            Arrays.stream(file).forEach(multipartFile -> {
-                String fileExt = multipartFile.getOriginalFilename()
-                        .substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1)
-                        .toLowerCase();
-                if (!PICTURE_FORMATS.contains(fileExt)) {
-                    throw new BusinessException(String.format("占不只支持%s格式图片上传", fileExt));
-                }
-                // 重构文件名称
-                String pikId = UUID.randomUUID().toString().replaceAll("-", "");
-                String newPictureName = pikId + "." + fileExt;
-                File fileSave = new File(pictureFilePath, newPictureName);
-                try {
-                    multipartFile.transferTo(fileSave);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new BusinessException(String.format("上传图片失败：%s", e.getMessage()));
-                }
-
-                paths.add(newPictureName);
-            });
-        }
-
-        return Result.builder()
-                .data(UploadResponse.Picture.builder().paths(paths).build())
-                .build();
-    }
+//    @ApiOperation(value = "图片上传")
+//    @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "图片文件", required = true, dataType = "file", paramType = "form")})
+//    @PostMapping("/picture")
+//    public Result uploadPicture(@RequestParam("file") MultipartFile[] file) {
+//        List<String> paths = new ArrayList<>();
+//        if (!ArrayUtils.isEmpty(file)) {
+//            Arrays.stream(file).forEach(multipartFile -> {
+//                String fileExt = multipartFile.getOriginalFilename()
+//                        .substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1)
+//                        .toLowerCase();
+//                if (!PICTURE_FORMATS.contains(fileExt)) {
+//                    throw new BusinessException(String.format("占不只支持%s格式图片上传", fileExt));
+//                }
+//                // 重构文件名称
+//                String pikId = UUID.randomUUID().toString().replaceAll("-", "");
+//                String newPictureName = pikId + "." + fileExt;
+//                File fileSave = new File(pictureFilePath, newPictureName);
+//                try {
+//                    multipartFile.transferTo(fileSave);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    throw new BusinessException(String.format("上传图片失败：%s", e.getMessage()));
+//                }
+//
+//                paths.add(newPictureName);
+//            });
+//        }
+//
+//        return Result.builder()
+//                .data(UploadResponse.Picture.builder().paths(paths).build())
+//                .build();
+//    }
 
     @ApiOperation(value = "图片获取")
     @ApiImplicitParams({@ApiImplicitParam(name = "path", value = "图片路径", required = true, dataType = "String", paramType = "path")})
