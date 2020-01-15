@@ -23,7 +23,7 @@ public class ArticleApp {
         return articleService.getById(id);
     }
 
-    public List<Article> list() {
-        return articleService.list();
+    public List<Article> listRandom(Integer size) {
+        return articleService.listRandom(size);
     }
 }

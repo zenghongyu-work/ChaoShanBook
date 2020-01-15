@@ -21,7 +21,7 @@ public class VideoService {
         return videoRepository.getById(id).orElseThrow(() -> new NotFoundException(String.format("短视频不存在（%d）", id)));
     }
 
-    public List<Video> list() {
-        return videoRepository.list();
+    public List<Video> listRandom(Integer size) {
+        return videoRepository.listRandom(size);
     }
 }

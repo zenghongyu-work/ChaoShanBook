@@ -10,5 +10,5 @@ public interface ArticleRepository {
 
     Optional<Article> getById(Integer id);
 
-    List<Article> list();
+    List<Article> listRandom(Integer size);
 }

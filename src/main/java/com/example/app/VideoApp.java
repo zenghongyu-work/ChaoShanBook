@@ -23,7 +23,7 @@ public class VideoApp {
         return videoService.getById(id);
     }
 
-    public List<Video> list() {
-        return videoService.list();
+    public List<Video> listRandom(Integer size) {
+        return videoService.listRandom(size);
     }
 }

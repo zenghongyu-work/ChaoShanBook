@@ -39,10 +39,8 @@ public class VideoRepositoryImpl implements VideoRepository {
     }
 
     @Override
-    public List<Video> list() {
-        Example example = new Example(VideoDbo.class);
-        example.setOrderByClause("create_at desc");
-        List<VideoDbo> videoDbos = videoMapper.selectByExample(example);
+    public List<Video> listRandom(Integer size) {
+        List<VideoDbo> videoDbos = videoMapper.listRandom(size);
         if (CollectionUtils.isEmpty(videoDbos)) {
             return Collections.emptyList();
         } else {

@@ -74,10 +74,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public List<Article> list() {
-        Example example = new Example(ArticleDbo.class);
-        example.setOrderByClause("create_at desc");
-        List<ArticleDbo> articleDbos = articleMapper.selectByExample(example);
+    public List<Article> listRandom(Integer size) {
+        List<ArticleDbo> articleDbos = articleMapper.listRandom(size);
         if (CollectionUtils.isEmpty(articleDbos)) {
             return Collections.emptyList();
         } else {

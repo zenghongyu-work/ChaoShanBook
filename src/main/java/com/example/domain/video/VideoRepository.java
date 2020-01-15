@@ -10,5 +10,5 @@ public interface VideoRepository {
 
     Optional<Video> getById(Integer id);
 
-    List<Video> list();
+    List<Video> listRandom(Integer size);
 }

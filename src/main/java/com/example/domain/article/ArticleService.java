@@ -21,7 +21,7 @@ public class ArticleService {
         return articleRepository.getById(id).orElseThrow(() -> new NotFoundException(String.format("文章不存在（%d）", id)));
     }
 
-    public List<Article> list() {
-        return articleRepository.list();
+    public List<Article> listRandom(Integer size) {
+        return articleRepository.listRandom(size);
     }
 }
