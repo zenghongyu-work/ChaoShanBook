@@ -32,6 +32,12 @@ public class User {
     private Gender gender = Gender.MALE;
 
     @Builder.Default
+    private String birthday = "1900-01-01 00:00:00";
+
+    @Builder.Default
+    private String signature = "";
+
+    @Builder.Default
     private String icon = "";
 
     @Builder.Default

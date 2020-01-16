@@ -38,6 +38,12 @@ public class UserResponse {
         @ApiModelProperty("性别")
         private Gender gender;
 
+        @ApiModelProperty("生日")
+        private String birthday;
+
+        @ApiModelProperty("签名")
+        private String signature;
+
         @ApiModelProperty("头像")
         private String icon;
 

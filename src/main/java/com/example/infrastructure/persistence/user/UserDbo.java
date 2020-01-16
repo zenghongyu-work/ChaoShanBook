@@ -27,6 +27,8 @@ public class UserDbo extends BaseDbo {
     private String nickname;
     private String phone;
     private String gender;
+    private String birthday;
+    private String signature;
     private String icon;
     private String province;
     private String downtown;

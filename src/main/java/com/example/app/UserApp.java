@@ -21,6 +21,10 @@ public class UserApp {
         return userService.login(name, pd);
     }
 
+    public User update(User user) {
+        return userService.update(user);
+    }
+
     public User updateNickname(User user) {
         return userService.updateNickname(user);
     }

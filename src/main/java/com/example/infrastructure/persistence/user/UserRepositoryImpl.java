@@ -24,7 +24,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User update(User user) {
-        return null;
+        UserDbo dbo = UserDbo.fromModule(user);
+
+        userMapper.updateByPrimaryKey(dbo);
+        return user;
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.example.controller.user;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.example.app.UserApp;
 import com.example.controller.common.Operator;
 import com.example.controller.common.Result;
 import com.example.domain.user.User;
+import com.example.infrastructure.utils.UploadUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.controller.user.UserRequest.*;
 import com.example.controller.user.UserResponse.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Arrays;
 
 @Api(tags = {"用户接口"})
 @RestController
@@ -66,6 +72,29 @@ public class UserController {
         SimpleUser simpleUser = SimpleUser.builder().build();
         BeanUtils.copyProperties(user, simpleUser);
         return Result.builder()
+                .data(simpleUser)
+                .build();
+    }
+
+    @ApiOperation(value = "更新")
+    @ApiImplicitParams({@ApiImplicitParam(name = "request", value = "更新表单", required = true, dataType = "com.example.controller.user.UserRequest.Update.class", paramType = "form")})
+    @PutMapping
+    public Result update(Update request) {
+        User user = userApp.getById(operator.getId());
+
+        BeanUtil.copyProperties(request, user,true, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+
+        if (request.getIcon() != null) {
+            user.setIcon(UploadUtils.uploadPicture(new MultipartFile[]{request.getIcon()}).get(0).getPath());
+        }
+
+        userApp.update(user);
+
+        SimpleUser simpleUser = SimpleUser.builder().build();
+        BeanUtils.copyProperties(user, simpleUser);
+
+        return Result.builder()
+                .msg("更新成功")
                 .data(simpleUser)
                 .build();
     }

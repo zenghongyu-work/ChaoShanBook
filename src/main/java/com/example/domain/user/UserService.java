@@ -42,6 +42,11 @@ public class UserService {
         return userRepository.getById(id).orElseThrow(() -> new NotFoundException(String.format("用户不存在（%d）", id)));
     }
 
+    public User update(User user) {
+        return userRepository.update(user);
+    }
+
+
     public User updateNickname(User user) {
         return userRepository.updateNickname(user);
     }
