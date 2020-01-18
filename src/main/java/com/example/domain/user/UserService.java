@@ -45,9 +45,4 @@ public class UserService {
     public User update(User user) {
         return userRepository.update(user);
     }
-
-
-    public User updateNickname(User user) {
-        return userRepository.updateNickname(user);
-    }
 }

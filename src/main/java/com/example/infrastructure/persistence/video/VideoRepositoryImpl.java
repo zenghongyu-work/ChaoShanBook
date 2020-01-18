@@ -50,4 +50,23 @@ public class VideoRepositoryImpl implements VideoRepository {
         }
     }
 
+    @Override
+    public List<Video> listInCreateBy(List<Integer> createBys) {
+        if (CollectionUtils.isEmpty(createBys)) {
+            return Collections.emptyList();
+        }
+
+        Example example = new Example(VideoDbo.class);
+        example.createCriteria().andIn("createBy", createBys);
+        List<VideoDbo> videoDbos = videoMapper.selectByExample(example);
+
+        if (CollectionUtils.isEmpty(videoDbos)) {
+            return Collections.emptyList();
+        } else {
+            return videoDbos.stream()
+                    .map(videoDbo -> videoDbo.toModule(Video.class))
+                    .collect(Collectors.toList());
+        }
+    }
+
 }

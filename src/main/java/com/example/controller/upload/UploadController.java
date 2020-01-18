@@ -125,7 +125,7 @@ public class UploadController {
 //                    throw new BusinessException(String.format("上传图片失败：%s", e.getMessage()));
 //                }
 //
-//                paths.add(newPictureName);
+//                paths.follow(newPictureName);
 //            });
 //        }
 //

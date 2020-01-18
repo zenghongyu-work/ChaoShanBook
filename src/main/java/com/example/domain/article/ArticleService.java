@@ -24,4 +24,8 @@ public class ArticleService {
     public List<Article> listRandom(Integer size) {
         return articleRepository.listRandom(size);
     }
+
+    public List<Article> listInCreateBy(List<Integer> createBys) {
+        return articleRepository.listInCreateBy(createBys);
+    }
 }

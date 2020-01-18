@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface ArticleMapper extends BaseMapper<ArticleDbo> {
 
-    @Select("select id,title,content,praise_count as praiseCount,create_by as createBy,create_at as createAt from article order by rand() limit #{size}")
+    @Select("select id,title,content,praise_count as praiseCount,create_by as createBy,create_at as createAt from article order by rand() * (praise_count+1) desc limit #{size}")
     List<ArticleDbo> listRandom(Integer size);
 }

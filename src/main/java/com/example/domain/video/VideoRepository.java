@@ -11,4 +11,6 @@ public interface VideoRepository {
     Optional<Video> getById(Integer id);
 
     List<Video> listRandom(Integer size);
+
+    List<Video> listInCreateBy(List<Integer> createBys);
 }

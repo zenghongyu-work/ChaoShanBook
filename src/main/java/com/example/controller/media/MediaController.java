@@ -38,10 +38,20 @@ public class MediaController {
     public Result list(@RequestParam("type") String type,
                        @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                        @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+
         int videoNum = (int) (Math.random() * pageSize);
         int articleNum = pageSize - videoNum;
-        List<Video> videos = videoApp.listRandom(videoNum);
-        List<Article> articles = articleApp.listRandom(articleNum);
+
+        List<Video> videos = null;
+        List<Article> articles = null;
+
+        if ("0".equals(type)) {
+            videos = videoApp.listFollow(videoNum);
+            articles = articleApp.listFollow(articleNum);
+        } else if ("1".equals(type)) {
+            videos = videoApp.listRandom(videoNum);
+            articles = articleApp.listRandom(articleNum);
+        }
 
         List<MediaResponse.Media> medias = new ArrayList<>(pageSize);
         medias.addAll(videos.stream().map(video -> {

@@ -11,4 +11,6 @@ public interface ArticleRepository {
     Optional<Article> getById(Integer id);
 
     List<Article> listRandom(Integer size);
+
+    List<Article> listInCreateBy(List<Integer> createBys);
 }

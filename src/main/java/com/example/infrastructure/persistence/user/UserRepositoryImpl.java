@@ -65,14 +65,4 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    @Override
-    public User updateNickname(User user) {
-        UserDbo dbo = UserDbo.builder()
-                .id(user.getId())
-                .nickname(user.getNickname())
-                .build();
-
-        userMapper.updateByPrimaryKeySelective(dbo);
-        return user;
-    }
 }

@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface VideoMapper extends BaseMapper<VideoDbo> {
 
-    @Select("select id, title, content, video, praise_count as praiseCount,create_by as createBy,create_at as createAt from video order by rand() limit #{size}")
+    @Select("select id, title, content, video, praise_count as praiseCount,create_by as createBy,create_at as createAt from video order by rand() * (praise_count+1) desc limit #{size}")
     List<VideoDbo> listRandom(Integer size);
 }

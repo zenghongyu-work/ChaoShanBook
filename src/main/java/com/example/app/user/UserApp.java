@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.user;
 
 import com.example.domain.user.User;
 import com.example.domain.user.UserService;
@@ -26,12 +26,8 @@ public class UserApp {
         return userService.update(user);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public User updateNickname(User user) {
-        return userService.updateNickname(user);
-    }
-
     public User getById(Integer id) {
         return userService.getById(id);
     }
+
 }

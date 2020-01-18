@@ -22,7 +22,8 @@ public class OperatorFilter implements Filter {
 
     public static final List<String> BLACK_PATH = Arrays.asList("PUT /chaoshanbook/user/nickname",
             "POST /chaoshanbook/video", "POST /chaoshanbook/article", "GET /chaoshanbook/user",
-            "PUT /chaoshanbook/user");
+            "PUT /chaoshanbook/user", "POST /chaoshanbook/user/follow", "DELETE /chaoshanbook/user/follow",
+            "GET /chaoshanbook/user/my-followers", "GET /chaoshanbook/user/users-follow");
 
     @Autowired
     private Operator operator;
@@ -31,16 +32,19 @@ public class OperatorFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
+        String token = httpServletRequest.getHeader(TOKEN);
+        if (StringUtils.isNotBlank(token)) {
+            Claims claims = JwtUtils.parseJWT(token);
+            operator.setId(Integer.parseInt(claims.getSubject()));
+        }
+
         if (!BLACK_PATH.contains(httpServletRequest.getMethod() + " " + httpServletRequest.getRequestURI())) {
             chain.doFilter(request, response);
         } else {
-            String token = httpServletRequest.getHeader(TOKEN);
-            if (StringUtils.isBlank(token)) {
+            if (operator.getId() == null) {
                 throw new UnauthorizedException();
             }
 
-            Claims claims = JwtUtils.parseJWT(token);
-            operator.setId(Integer.parseInt(claims.getSubject()));
             chain.doFilter(request, response);
         }
     }

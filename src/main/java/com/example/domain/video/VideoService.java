@@ -24,4 +24,8 @@ public class VideoService {
     public List<Video> listRandom(Integer size) {
         return videoRepository.listRandom(size);
     }
+
+    public List<Video> listInCreateBy(List<Integer> createBys) {
+        return videoRepository.listInCreateBy(createBys);
+    }
 }

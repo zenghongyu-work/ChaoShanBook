@@ -2,10 +2,13 @@ package com.example.controller.user;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.example.app.UserApp;
+import com.example.app.user.FollowerApp;
+import com.example.app.user.UserApp;
+import com.example.controller.assembler.UserAssembler;
 import com.example.controller.common.Operator;
 import com.example.controller.common.Result;
 import com.example.domain.user.User;
+import com.example.domain.user.entity.follower.Follower;
 import com.example.infrastructure.utils.UploadUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,6 +23,8 @@ import com.example.controller.user.UserRequest.*;
 import com.example.controller.user.UserResponse.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.stream.Collectors;
+
 
 @Api(tags = {"用户接口"})
 @RestController
@@ -30,7 +35,13 @@ public class UserController {
     private String pictureBaseUrl;
 
     @Autowired
+    private UserAssembler userAssembler;
+
+    @Autowired
     private UserApp userApp;
+
+    @Autowired
+    private FollowerApp followerApp;
 
     @Autowired
     private Operator operator;
@@ -83,10 +94,10 @@ public class UserController {
     public Result update(@RequestBody Update request) {
         User user = userApp.getById(operator.getId());
 
-        BeanUtil.copyProperties(request, user,true, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
+        BeanUtil.copyProperties(request, user, true, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
 
         userApp.update(user);
-        
+
         return Result.builder()
                 .msg("更新成功")
                 .data(toSimpleUser(user))
@@ -122,4 +133,48 @@ public class UserController {
                 .build();
     }
 
+    @ApiOperation(value = "关注用户")
+    @PostMapping("/follow")
+    public Result follow(@RequestBody FollowerRequest.Follow request) {
+        Follower follower = Follower.builder()
+                .userId(request.getUserId())
+                .followerId(operator.getId())
+                .build();
+        followerApp.follow(follower);
+
+        return Result.builder()
+                .msg("关注成功")
+                .data(follower)
+                .build();
+    }
+
+    @ApiOperation(value = "取消关注")
+    @DeleteMapping("/follow")
+    public Result unFollow(@RequestBody FollowerRequest.Follow request) {
+        followerApp.unFollow(request.getUserId(), operator.getId());
+
+        return Result.builder()
+                .msg("取消关注成功")
+                .build();
+    }
+
+    @ApiOperation(value = "我的关注用户")
+    @GetMapping("/my-followers")
+    public Result myFollowers() {
+        return Result.builder()
+                .data(followerApp.listByUser(operator.getId())
+                        .stream().map(follower -> toSimpleUser(userApp.getById(follower.getFollowerId())))
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    @ApiOperation(value = "我关注的用户")
+    @GetMapping("/users-follow")
+    public Result usersFollow() {
+        return Result.builder()
+                .data(followerApp.listByFollower(operator.getId())
+                        .stream().map(follower -> toSimpleUser(userApp.getById(follower.getUserId())))
+                        .collect(Collectors.toList()))
+                .build();
+    }
 }

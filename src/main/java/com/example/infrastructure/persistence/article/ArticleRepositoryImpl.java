@@ -88,4 +88,23 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         }
     }
 
+    @Override
+    public List<Article> listInCreateBy(List<Integer> createBys) {
+        if (CollectionUtils.isEmpty(createBys)) {
+            return Collections.emptyList();
+        }
+
+        Example example = new Example(ArticleDbo.class);
+        example.createCriteria().andIn("createBy", createBys);
+        List<ArticleDbo> articleDbos = articleMapper.selectByExample(example);
+
+        if (CollectionUtils.isEmpty(articleDbos)) {
+            return Collections.emptyList();
+        } else {
+            return articleDbos.stream()
+                    .map(articleDbo -> articleDbo.toModule(Article.class))
+                    .collect(Collectors.toList());
+        }
+    }
+
 }

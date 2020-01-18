@@ -13,6 +13,4 @@ public interface UserRepository {
     Optional<User> getByName(String name);
 
     Optional<User> getById(Integer id);
-
-    User updateNickname(User user);
 }
