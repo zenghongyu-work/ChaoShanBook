@@ -21,10 +21,12 @@ public class UserApp {
         return userService.login(name, pd);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public User update(User user) {
         return userService.update(user);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public User updateNickname(User user) {
         return userService.updateNickname(user);
     }

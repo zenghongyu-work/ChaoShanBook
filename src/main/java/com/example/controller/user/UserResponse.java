@@ -1,6 +1,5 @@
 package com.example.controller.user;
 
-import com.example.domain.user.valueobject.Gender;
 import com.example.domain.user.valueobject.Location;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -36,7 +35,7 @@ public class UserResponse {
         private String phone;
 
         @ApiModelProperty("性别")
-        private Gender gender;
+        private String gender;
 
         @ApiModelProperty("生日")
         private String birthday;

@@ -1,6 +1,6 @@
 package com.example.domain.user;
 
-import com.example.domain.user.valueobject.Gender;
+import com.example.domain.common.EnumType;
 import com.example.domain.user.valueobject.Location;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +29,7 @@ public class User {
     private String phone = "";
 
     @Builder.Default
-    private Gender gender = Gender.MALE;
+    private String gender = EnumType.Gender.MALE;
 
     @Builder.Default
     private String birthday = "1900-01-01 00:00:00";

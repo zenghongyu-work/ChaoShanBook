@@ -1,9 +1,6 @@
 package com.example.controller.video;
 
-import com.example.domain.user.valueobject.Gender;
-import com.example.domain.user.valueobject.Location;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

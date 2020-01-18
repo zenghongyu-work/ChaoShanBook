@@ -32,5 +32,8 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 upload-file-path:
-  video: /APP/upload/video
-  picture: /APP/upload/picture
+  video: D:\video
+  picture: D:\picture
+
+picture-base-url: http://111.231.245.190:8080/chaoshanbook/upload/picture/
+video-base-url: http://111.231.245.190:8080/chaoshanbook/upload/video/

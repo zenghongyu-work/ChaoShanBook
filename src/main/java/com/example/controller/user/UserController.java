@@ -11,19 +11,23 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import com.example.controller.user.UserRequest.*;
 import com.example.controller.user.UserResponse.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 
 @Api(tags = {"用户接口"})
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Value("${picture-base-url}")
+    private String pictureBaseUrl;
 
     @Autowired
     private UserApp userApp;
@@ -58,10 +62,9 @@ public class UserController {
     @GetMapping
     public Result getByToken() {
         User user = userApp.getById(operator.getId());
-        SimpleUser simpleUser = SimpleUser.builder().build();
-        BeanUtils.copyProperties(user, simpleUser);
+
         return Result.builder()
-                .data(simpleUser)
+                .data(toSimpleUser(user))
                 .build();
     }
 
@@ -69,47 +72,54 @@ public class UserController {
     @GetMapping("/{id}")
     public Result getById(@PathVariable("id") Integer id) {
         User user = userApp.getById(id);
-        SimpleUser simpleUser = SimpleUser.builder().build();
-        BeanUtils.copyProperties(user, simpleUser);
+
         return Result.builder()
-                .data(simpleUser)
+                .data(toSimpleUser(user))
                 .build();
     }
 
     @ApiOperation(value = "更新")
-    @ApiImplicitParams({@ApiImplicitParam(name = "request", value = "更新表单", required = true, dataType = "com.example.controller.user.UserRequest.Update.class", paramType = "form")})
-    @PutMapping
-    public Result update(Update request) {
+    @PutMapping("/update")
+    public Result update(@RequestBody Update request) {
         User user = userApp.getById(operator.getId());
 
         BeanUtil.copyProperties(request, user,true, CopyOptions.create().setIgnoreNullValue(true).setIgnoreError(true));
 
-        if (request.getIcon() != null) {
-            user.setIcon(UploadUtils.uploadPicture(new MultipartFile[]{request.getIcon()}).get(0).getPath());
+        userApp.update(user);
+        
+        return Result.builder()
+                .msg("更新成功")
+                .data(toSimpleUser(user))
+                .build();
+    }
+
+    private SimpleUser toSimpleUser(User user) {
+        SimpleUser simpleUser = SimpleUser.builder().build();
+        BeanUtils.copyProperties(user, simpleUser);
+
+        if (StringUtils.isNotBlank(simpleUser.getIcon())) {
+            simpleUser.setIcon(pictureBaseUrl + simpleUser.getIcon());
+        }
+
+        return simpleUser;
+    }
+
+    @ApiOperation(value = "更新头像")
+    @ApiImplicitParams({@ApiImplicitParam(name = "icon", value = "头像", required = true, dataType = "MultipartFile", paramType = "form")})
+    @PostMapping("/update/icon")
+    public Result updateIcon(@RequestParam MultipartFile icon) {
+        User user = userApp.getById(operator.getId());
+
+        if (icon != null) {
+            user.setIcon(UploadUtils.uploadPicture(new MultipartFile[]{icon}).get(0).getPath());
         }
 
         userApp.update(user);
 
-        SimpleUser simpleUser = SimpleUser.builder().build();
-        BeanUtils.copyProperties(user, simpleUser);
-
         return Result.builder()
                 .msg("更新成功")
-                .data(simpleUser)
+                .data(toSimpleUser(user))
                 .build();
     }
 
-    @ApiOperation(value = "更新昵称")
-    @PutMapping("/nickname")
-    public Result updateNickname(@RequestBody UpdateNickname request) {
-        User user = userApp.getById(operator.getId());
-        BeanUtils.copyProperties(request, user);
-        userApp.updateNickname(user);
-        SimpleUser simpleUser = SimpleUser.builder().build();
-        BeanUtils.copyProperties(user, simpleUser);
-        return Result.builder()
-                .msg("更新成功")
-                .data(simpleUser)
-                .build();
-    }
 }

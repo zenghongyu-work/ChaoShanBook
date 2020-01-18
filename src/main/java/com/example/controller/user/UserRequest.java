@@ -1,6 +1,5 @@
 package com.example.controller.user;
 
-import com.example.domain.user.valueobject.Gender;
 import com.example.domain.user.valueobject.Location;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,14 +20,11 @@ public class UserRequest {
     @Data
     public static class Update {
 
-        @ApiModelProperty("头像")
-        private MultipartFile icon;
-
         @ApiModelProperty("昵称")
         private String nickname;
 
         @ApiModelProperty("性别")
-        private Gender gender;
+        private String gender;
 
         @ApiModelProperty("地址")
         private Location location;
@@ -41,9 +37,10 @@ public class UserRequest {
     }
 
     @Data
-    public static class UpdateNickname {
+    public static class UpdateIcon {
 
-        @ApiModelProperty("昵称")
-        private String nickname;
+        @ApiModelProperty("头像")
+        private MultipartFile icon;
     }
+
 }

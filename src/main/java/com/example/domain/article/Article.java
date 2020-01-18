@@ -1,6 +1,7 @@
 package com.example.domain.article;
 
 import com.example.domain.article.valueobject.Picture;
+import com.example.domain.media.Media;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+public class Article implements Media {
     @Builder.Default
     private Integer id = 0;
 

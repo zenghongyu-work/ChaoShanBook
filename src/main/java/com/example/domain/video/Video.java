@@ -1,5 +1,6 @@
 package com.example.domain.video;
 
+import com.example.domain.media.Media;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Video {
+public class Video implements Media {
     @Builder.Default
     private Integer id = 0;
 

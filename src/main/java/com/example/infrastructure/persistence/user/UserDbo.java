@@ -1,7 +1,6 @@
 package com.example.infrastructure.persistence.user;
 
 import com.example.domain.user.User;
-import com.example.domain.user.valueobject.Gender;
 import com.example.domain.user.valueobject.Location;
 import com.example.infrastructure.persistence.BaseDbo;
 import lombok.*;
@@ -44,7 +43,6 @@ public class UserDbo extends BaseDbo {
                 .province(this.province)
                 .downtown(this.downtown)
                 .build());
-        target.setGender(Gender.valueOf(this.gender));
         return target;
     }
 
@@ -53,7 +51,6 @@ public class UserDbo extends BaseDbo {
         BeanUtils.copyProperties(user, target);
         target.setProvince(user.getLocation().getProvince());
         target.setDowntown(user.getLocation().getDowntown());
-        target.setGender(user.getGender().toString());
         return target;
     }
 }
