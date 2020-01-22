@@ -34,7 +34,7 @@ public class FollowerRepositoryImpl implements FollowerRepository {
         if (userDbo == null) {
             return Optional.empty();
         } else {
-            return Optional.of(followerMapper.selectOneByExample(example).toModule(Follower.class));
+            return Optional.of(userDbo.toModule(Follower.class));
         }
     }
 

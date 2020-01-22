@@ -58,6 +58,7 @@ public class VideoRepositoryImpl implements VideoRepository {
 
         Example example = new Example(VideoDbo.class);
         example.createCriteria().andIn("createBy", createBys);
+        example.setOrderByClause("create_at desc");
         List<VideoDbo> videoDbos = videoMapper.selectByExample(example);
 
         if (CollectionUtils.isEmpty(videoDbos)) {

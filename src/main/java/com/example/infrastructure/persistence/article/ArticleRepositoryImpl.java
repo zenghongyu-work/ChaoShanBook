@@ -96,6 +96,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
         Example example = new Example(ArticleDbo.class);
         example.createCriteria().andIn("createBy", createBys);
+        example.setOrderByClause("create_at desc");
         List<ArticleDbo> articleDbos = articleMapper.selectByExample(example);
 
         if (CollectionUtils.isEmpty(articleDbos)) {

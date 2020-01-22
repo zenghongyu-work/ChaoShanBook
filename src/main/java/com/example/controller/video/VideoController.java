@@ -1,10 +1,14 @@
 package com.example.controller.video;
 
-import com.example.app.VideoApp;
+import com.example.app.video.VideoApp;
+import com.example.app.video.VideoCollectApp;
 import com.example.controller.common.Operator;
 import com.example.controller.common.Result;
+import com.example.controller.user.FollowerRequest;
 import com.example.controller.video.VideoRequest.*;
+import com.example.domain.user.entity.follower.Follower;
 import com.example.domain.video.Video;
+import com.example.domain.video.entity.videocollect.VideoCollect;
 import com.example.infrastructure.utils.DataUtils;
 import com.example.infrastructure.utils.UploadUtils;
 import io.swagger.annotations.Api;
@@ -22,6 +26,9 @@ public class VideoController {
 
     @Autowired
     private VideoApp videoApp;
+
+    @Autowired
+    private VideoCollectApp videoCollectApp;
 
     @Autowired
     private Operator operator;
@@ -47,6 +54,31 @@ public class VideoController {
         return Result.builder()
                 .data(videoApp.getById(id))
                 .build();
+    }
+
+    @ApiOperation(value = "收藏视频")
+    @PostMapping("/collect")
+    public Result collect(@RequestBody VideoCollectRequest.Collect request) {
+        if ("0".equals(request.getType())) { // 取消收藏
+            videoCollectApp.unCollect(request.getVideoId(), operator.getId());
+
+            return Result.builder()
+                    .msg("取消收藏成功")
+                    .build();
+        } else if ("1".equals(request.getType())) { // 关注
+            VideoCollect collect = VideoCollect.builder()
+                    .videoId(request.getVideoId())
+                    .userId(operator.getId())
+                    .build();
+            videoCollectApp.collect(collect);
+
+            return Result.builder()
+                    .msg("收藏成功")
+                    .data(collect)
+                    .build();
+        }
+
+        return null;
     }
 
 }

@@ -1,11 +1,12 @@
-package com.example.app;
+package com.example.app.article;
 
 import com.example.app.user.FollowerApp;
 import com.example.controller.common.Operator;
+import com.example.domain.article.Article;
+import com.example.domain.article.ArticleService;
 import com.example.domain.execption.UnauthorizedException;
 import com.example.domain.user.entity.follower.Follower;
 import com.example.domain.video.Video;
-import com.example.domain.video.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class VideoApp {
+public class ArticleApp {
 
     @Autowired
-    private VideoService videoService;
+    private ArticleService articleService;
 
     @Autowired
     private FollowerApp followerApp;
@@ -27,33 +28,37 @@ public class VideoApp {
     private Operator operator;
 
     @Transactional(rollbackFor = Exception.class)
-    public Video add(Video video) {
-        return videoService.add(video);
+    public Article add(Article article) {
+        return articleService.add(article);
     }
 
-    public Video getById(Integer id) {
-        return videoService.getById(id);
+    public Article getById(Integer id) {
+        return articleService.getById(id);
     }
 
-    public List<Video> listRandom(Integer size) {
-        return videoService.listRandom(size);
+    public List<Article> listRandom(Integer size) {
+        return articleService.listRandom(size);
     }
 
-    public List<Video> listFollow(int videoNum) {
+    public List<Article> listFollow(int articleNum) {
         if (operator.getId() == null || operator.getId() == 0) {
             throw new UnauthorizedException();
         }
 
         List<Follower> followers = followerApp.listByFollower(operator.getId());
-        List<Video> videos = videoService.listInCreateBy(followers.stream()
+        List<Article> articles = articleService.listInCreateBy(followers.stream()
                 .map(follower -> follower.getUserId()).collect(Collectors.toList()));
 
-        Collections.shuffle(videos);
+        Collections.shuffle(articles);
 
-        if (videos.size() > videoNum) {
-            return videos.subList(0, videoNum);
+        if (articles.size() > articleNum) {
+            return articles.subList(0, articleNum);
         }
 
-        return videos;
+        return articles;
+    }
+
+    public List<Article> listInCreateBy(List<Integer> createBys) {
+        return articleService.listInCreateBy(createBys);
     }
 }
