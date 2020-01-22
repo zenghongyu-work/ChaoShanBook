@@ -2,6 +2,7 @@ package com.example.controller.media;
 
 import com.example.app.ArticleApp;
 import com.example.app.VideoApp;
+import com.example.controller.assembler.MediaAssembler;
 import com.example.controller.common.Result;
 import com.example.domain.article.Article;
 import com.example.domain.video.Video;
@@ -33,6 +34,9 @@ public class MediaController {
     @Autowired
     private ArticleApp articleApp;
 
+    @Autowired
+    private MediaAssembler mediaAssembler;
+
     @ApiOperation(value = "获取列表")
     @GetMapping
     public Result list(@RequestParam("type") String type,
@@ -53,21 +57,21 @@ public class MediaController {
             articles = articleApp.listRandom(articleNum);
         }
 
-        List<MediaResponse.Media> medias = new ArrayList<>(pageSize);
+        List<MediaResponse.MediaDetail> medias = new ArrayList<>(pageSize);
         medias.addAll(videos.stream().map(video -> {
             video.setVideo(videoBaseUrl + video.getVideo());
-            return MediaResponse.Media
+            return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
                     .type("0")
-                    .media(video).build();
+                    .media(video).build());
         }).collect(Collectors.toList()));
 
         medias.addAll(articles.stream().map(article -> {
             article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
-            return MediaResponse.Media
+            return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
                     .type("1")
-                    .media(article).build();
+                    .media(article).build());
         }).collect(Collectors.toList()));
 
         Collections.shuffle(medias);

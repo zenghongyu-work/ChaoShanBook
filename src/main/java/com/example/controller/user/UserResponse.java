@@ -48,5 +48,14 @@ public class UserResponse {
 
         @ApiModelProperty("地址")
         private Location location;
+
+        @ApiModelProperty("关注数")
+        private Integer followCount;
+
+        @ApiModelProperty("粉丝数")
+        private Integer fanCount;
+
+        @ApiModelProperty("获赞数")
+        private Integer praiseCount;
     }
 }

@@ -38,7 +38,7 @@ public class User {
     private String signature = "";
 
     @Builder.Default
-    private String icon = "";
+    private String icon = "default.jpg";
 
     @Builder.Default
     private Location location = Location.builder().build();

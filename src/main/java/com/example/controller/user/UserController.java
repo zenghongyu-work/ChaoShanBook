@@ -69,25 +69,30 @@ public class UserController {
                 .build();
     }
 
-    @ApiOperation(value = "根据Token获取用户详情")
+    @ApiOperation(value = "根据Token或Id获取用户详情")
     @GetMapping
-    public Result getByToken() {
-        User user = userApp.getById(operator.getId());
+    public Result get(@RequestParam(required = false) Integer id) {
+        User user;
+        if (id != null && id.intValue() != 0) {
+            user = userApp.getById(id);
+        } else {
+            user = userApp.getById(operator.getId());
+        }
 
         return Result.builder()
                 .data(toSimpleUser(user))
                 .build();
     }
 
-    @ApiOperation(value = "根据Id获取用户详情")
-    @GetMapping("/{id}")
-    public Result getById(@PathVariable("id") Integer id) {
-        User user = userApp.getById(id);
-
-        return Result.builder()
-                .data(toSimpleUser(user))
-                .build();
-    }
+//    @ApiOperation(value = "根据Id获取用户详情")
+//    @GetMapping("/{id}")
+//    public Result getById(@PathVariable("id") Integer id) {
+//        User user = userApp.getById(id);
+//
+//        return Result.builder()
+//                .data(toSimpleUser(user))
+//                .build();
+//    }
 
     @ApiOperation(value = "更新")
     @PutMapping("/update")
@@ -136,27 +141,37 @@ public class UserController {
     @ApiOperation(value = "关注用户")
     @PostMapping("/follow")
     public Result follow(@RequestBody FollowerRequest.Follow request) {
-        Follower follower = Follower.builder()
-                .userId(request.getUserId())
-                .followerId(operator.getId())
-                .build();
-        followerApp.follow(follower);
+        if ("0".equals(request.getType())) { // 取消关注
+            followerApp.unFollow(request.getUserId(), operator.getId());
 
-        return Result.builder()
-                .msg("关注成功")
-                .data(follower)
-                .build();
+            return Result.builder()
+                    .msg("取消关注成功")
+                    .build();
+        } else if ("1".equals(request.getType())) { // 关注
+            Follower follower = Follower.builder()
+                    .userId(request.getUserId())
+                    .followerId(operator.getId())
+                    .build();
+            followerApp.follow(follower);
+
+            return Result.builder()
+                    .msg("关注成功")
+                    .data(follower)
+                    .build();
+        }
+
+        return null;
     }
 
-    @ApiOperation(value = "取消关注")
-    @DeleteMapping("/follow")
-    public Result unFollow(@RequestBody FollowerRequest.Follow request) {
-        followerApp.unFollow(request.getUserId(), operator.getId());
-
-        return Result.builder()
-                .msg("取消关注成功")
-                .build();
-    }
+//    @ApiOperation(value = "取消关注")
+//    @DeleteMapping("/follow")
+//    public Result unFollow(@RequestBody FollowerRequest.Follow request) {
+//        followerApp.unFollow(request.getUserId(), operator.getId());
+//
+//        return Result.builder()
+//                .msg("取消关注成功")
+//                .build();
+//    }
 
     @ApiOperation(value = "我的关注用户")
     @GetMapping("/my-followers")

@@ -8,6 +8,9 @@ public class FollowerRequest {
     @Data
     public static class Follow {
 
+        @ApiModelProperty("操作")
+        private String type;
+
         @ApiModelProperty("被关注用户")
         private Integer userId;
     }
