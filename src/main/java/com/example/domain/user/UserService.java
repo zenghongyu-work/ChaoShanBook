@@ -45,4 +45,24 @@ public class UserService {
     public User update(User user) {
         return userRepository.update(user);
     }
+
+    public User increaseFollowCount(User user) {
+        user.setFollowCount(user.getFollowCount() + 1);
+        return userRepository.update(user);
+    }
+
+    public User increaseFanCount(User user) {
+        user.setFanCount(user.getFanCount() + 1);
+        return userRepository.update(user);
+    }
+
+    public User decreaseFollowCount(User user) {
+        user.setFollowCount(user.getFollowCount() - 1 < 0 ? 0 : user.getFollowCount() - 1);
+        return userRepository.update(user);
+    }
+
+    public User decreaseFanCount(User user) {
+        user.setFanCount(user.getFanCount() - 1 < 0 ? 0 : user.getFanCount() - 1);
+        return userRepository.update(user);
+    }
 }
