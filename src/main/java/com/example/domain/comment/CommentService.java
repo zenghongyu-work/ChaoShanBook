@@ -31,7 +31,10 @@ public class CommentService {
         comment.setUserNickname(user.getNickname());
         comment.setUserIcon(user.getIcon());
 
-        if (comment.getToUserId() != null && comment.getToUserId().intValue() != 0) {
+        if (comment.getReplyId() != null && comment.getReplyId().intValue() != 0) {
+            Comment reply = commentRepository.getById(comment.getReplyId()).orElseThrow(() -> new BusinessException("回复的评论不存在"));
+            comment.setToUserId(reply.getUserId());
+
             User toUser = userService.getById(comment.getToUserId());
             comment.setToUserNickname(toUser.getNickname());
             comment.setToUserIcon(toUser.getIcon());

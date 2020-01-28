@@ -24,9 +24,6 @@ public class CommentRequest {
 
         @ApiModelProperty("回复评论ID")
         private Integer replyId; // 第一级评论没回复评论ID
-
-        @ApiModelProperty("回复评论的创建用户ID")
-        private Integer toUserId;
     }
 
     @Data
