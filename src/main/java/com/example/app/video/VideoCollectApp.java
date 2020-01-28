@@ -27,4 +27,8 @@ public class VideoCollectApp {
     public List<VideoCollect> listByUser(Integer userId) {
         return videoCollectService.listByUser(userId);
     }
+
+    public boolean isCollect(Integer videoId, Integer userId) {
+        return videoCollectService.isCollect(videoId, userId);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -22,6 +23,10 @@ public class FollowerService {
     public Follower follow(Follower follower) {
         if (followerRepository.getByUserAndFollower(follower.getUserId(), follower.getFollowerId()).isPresent()) {
             throw new BusinessException("已关注该用户");
+        }
+
+        if (follower.getUserId().equals(follower.getFollowerId())) {
+            throw new BusinessException("自己不需要关注哟");
         }
 
         follower.setFollowTime(DataUtils.getCurrentDataTime());
@@ -54,4 +59,7 @@ public class FollowerService {
         return followerRepository.listByUser(userId);
     }
 
+    public boolean isFollow(Integer userId, Integer followerId) {
+        return followerRepository.getByUserAndFollower(userId, followerId).isPresent() ? true : false;
+    }
 }

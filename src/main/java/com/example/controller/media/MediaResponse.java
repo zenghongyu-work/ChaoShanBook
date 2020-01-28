@@ -21,5 +21,8 @@ public class MediaResponse {
 
         @ApiModelProperty("用户信息")
         private UserResponse.SimpleUser creator;
+
+        @ApiModelProperty("是否收藏")
+        private String isCollect;
     }
 }

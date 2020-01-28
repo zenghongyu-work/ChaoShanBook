@@ -82,7 +82,9 @@ public class MediaController {
             return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
                     .type(VIDEO)
-                    .media(video).build());
+                    .media(video)
+                    .isCollect(videoCollectApp.isCollect(video.getId(), operator.getId()) ? "1" : "0")
+                    .build());
         }).collect(Collectors.toList()));
 
         medias.addAll(articles.stream().map(article -> {
@@ -90,7 +92,9 @@ public class MediaController {
             return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
                     .type(ARTICLE)
-                    .media(article).build());
+                    .media(article)
+                    .isCollect(articleCollectApp.isCollect(article.getId(), operator.getId()) ? "1" : "0")
+                    .build());
         }).collect(Collectors.toList()));
 
         Collections.shuffle(medias);
@@ -120,7 +124,9 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
-                        .media(video).build()));
+                        .media(video)
+                        .isCollect("1")
+                        .build()));
                 i++;
             } else {
                 Article article = articleApp.getById(articleCollect.getArticleId());
@@ -128,7 +134,9 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(ARTICLE)
-                        .media(article).build()));
+                        .media(article)
+                        .isCollect("1")
+                        .build()));
                 j++;
             }
         }
@@ -142,7 +150,9 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
-                        .media(video).build()));
+                        .media(video)
+                        .isCollect("1")
+                        .build()));
             }
         }
 
@@ -154,7 +164,9 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(ARTICLE)
-                        .media(article).build()));
+                        .media(article)
+                        .isCollect("1")
+                        .build()));
             }
         }
 
@@ -183,14 +195,18 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
-                        .media(video).build()));
+                        .media(video)
+                        .isCollect(videoCollectApp.isCollect(video.getId(), operator.getId()) ? "1" : "0")
+                        .build()));
                 i++;
             } else {
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(ARTICLE)
-                        .media(article).build()));
+                        .media(article)
+                        .isCollect(articleCollectApp.isCollect(article.getId(), operator.getId()) ? "1" : "0")
+                        .build()));
                 j++;
             }
         }
@@ -203,7 +219,9 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
-                        .media(video).build()));
+                        .media(video)
+                        .isCollect(videoCollectApp.isCollect(video.getId(), operator.getId()) ? "1" : "0")
+                        .build()));
             }
         }
 
@@ -214,7 +232,9 @@ public class MediaController {
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(ARTICLE)
-                        .media(article).build()));
+                        .media(article)
+                        .isCollect(articleCollectApp.isCollect(article.getId(), operator.getId()) ? "1" : "0")
+                        .build()));
             }
         }
 

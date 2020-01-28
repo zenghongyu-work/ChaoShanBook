@@ -7,6 +7,7 @@ import com.example.app.user.UserApp;
 import com.example.controller.assembler.UserAssembler;
 import com.example.controller.common.Operator;
 import com.example.controller.common.Result;
+import com.example.domain.execption.BusinessException;
 import com.example.domain.user.User;
 import com.example.domain.user.entity.follower.Follower;
 import com.example.infrastructure.utils.UploadUtils;
@@ -23,6 +24,8 @@ import com.example.controller.user.UserRequest.*;
 import com.example.controller.user.UserResponse.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -190,6 +193,25 @@ public class UserController {
                 .data(followerApp.listByFollower(operator.getId())
                         .stream().map(follower -> toSimpleUser(userApp.getById(follower.getUserId())))
                         .collect(Collectors.toList()))
+                .build();
+    }
+
+    @ApiOperation(value = "是否关注")
+    @GetMapping("/is-follow")
+    public Result isFollow(@RequestParam String userId) {
+        String[] userArray = userId.split(",");
+        List<String> results = new ArrayList<>(userArray.length);
+
+        for (String user : userArray) {
+            if (StringUtils.isBlank(user)) {
+                throw new BusinessException("用户列表非法");
+            }
+
+            results.add(followerApp.isFollow(Integer.parseInt(user), operator.getId()) ? "1" : "0");
+        }
+
+        return Result.builder()
+                .data(results)
                 .build();
     }
 }

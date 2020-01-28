@@ -30,4 +30,8 @@ public class VideoCollectService {
     public List<VideoCollect> listByUser(Integer userId) {
         return videoCollectRepository.listByUser(userId);
     }
+
+    public boolean isCollect(Integer videoId, Integer userId) {
+        return videoCollectRepository.getByVideoAndUser(videoId, userId).isPresent() ? true : false;
+    }
 }

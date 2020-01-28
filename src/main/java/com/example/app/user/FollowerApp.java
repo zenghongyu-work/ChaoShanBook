@@ -31,4 +31,8 @@ public class FollowerApp {
     public List<Follower> listByUser(Integer userId) {
         return followerService.listByUser(userId);
     }
+
+    public boolean isFollow(Integer userId, Integer followerId) {
+        return followerService.isFollow(userId, followerId);
+    }
 }

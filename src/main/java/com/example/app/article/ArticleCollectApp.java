@@ -28,4 +28,8 @@ public class ArticleCollectApp {
     public List<ArticleCollect> listByUser(Integer userId) {
         return articleCollectService.listByUser(userId);
     }
+
+    public boolean isCollect(Integer articleId, Integer userId) {
+        return articleCollectService.isCollect(articleId, userId);
+    }
 }

@@ -5,4 +5,4 @@ CREATE TABLE `article` (
   `praise_count`    int not null,
   `create_by`   int not null,
   `create_at`   VARCHAR(64) not null
-) COMMENT='文章' engine=InnoDB default charset=utf8;
+) COMMENT='文章' engine=InnoDB default charset=utf8mb4;

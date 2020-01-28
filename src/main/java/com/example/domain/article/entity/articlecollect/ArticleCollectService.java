@@ -30,4 +30,8 @@ public class ArticleCollectService {
     public List<ArticleCollect> listByUser(Integer userId) {
         return articleCollectRepository.listByUser(userId);
     }
+
+    public boolean isCollect(Integer articleId, Integer userId) {
+        return articleCollectRepository.getByArticleAndUser(articleId, userId).isPresent() ? true : false;
+    }
 }
