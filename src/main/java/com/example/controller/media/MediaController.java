@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.domain.common.EnumType.MediaType.ARTICLE;
+import static com.example.domain.common.EnumType.MediaType.VIDEO;
+
 @Api(tags = {"媒体接口"})
 @RestController
 @RequestMapping("/media")
@@ -78,7 +81,7 @@ public class MediaController {
             video.setVideo(videoBaseUrl + video.getVideo());
             return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
-                    .type("0")
+                    .type(VIDEO)
                     .media(video).build());
         }).collect(Collectors.toList()));
 
@@ -86,7 +89,7 @@ public class MediaController {
             article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
             return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
-                    .type("1")
+                    .type(ARTICLE)
                     .media(article).build());
         }).collect(Collectors.toList()));
 
@@ -116,7 +119,7 @@ public class MediaController {
 
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("0")
+                        .type(VIDEO)
                         .media(video).build()));
                 i++;
             } else {
@@ -124,7 +127,7 @@ public class MediaController {
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("1")
+                        .type(ARTICLE)
                         .media(article).build()));
                 j++;
             }
@@ -138,7 +141,7 @@ public class MediaController {
 
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("0")
+                        .type(VIDEO)
                         .media(video).build()));
             }
         }
@@ -150,7 +153,7 @@ public class MediaController {
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("1")
+                        .type(ARTICLE)
                         .media(article).build()));
             }
         }
@@ -179,14 +182,14 @@ public class MediaController {
 
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("0")
+                        .type(VIDEO)
                         .media(video).build()));
                 i++;
             } else {
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("1")
+                        .type(ARTICLE)
                         .media(article).build()));
                 j++;
             }
@@ -199,7 +202,7 @@ public class MediaController {
 
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("0")
+                        .type(VIDEO)
                         .media(video).build()));
             }
         }
@@ -210,7 +213,7 @@ public class MediaController {
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
-                        .type("1")
+                        .type(ARTICLE)
                         .media(article).build()));
             }
         }
