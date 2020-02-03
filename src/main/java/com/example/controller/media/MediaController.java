@@ -9,6 +9,7 @@ import com.example.controller.common.Operator;
 import com.example.controller.common.Result;
 import com.example.domain.article.Article;
 import com.example.domain.article.entity.articlecollect.ArticleCollect;
+import com.example.domain.execption.NotFoundException;
 import com.example.domain.video.Video;
 import com.example.domain.video.entity.videocollect.VideoCollect;
 import io.swagger.annotations.Api;
@@ -118,7 +119,14 @@ public class MediaController {
             ArticleCollect articleCollect = articleCollects.get(j);
 
             if (StringUtils.compare(videoCollect.getCollectTime(), articleCollect.getCollectTime()) > 0) {
-                Video video = videoApp.getById(videoCollect.getVideoId());
+                Video video;
+                try {
+                    video = videoApp.getById(videoCollect.getVideoId());
+                } catch (NotFoundException e) {
+                    videoCollectApp.unCollect(videoCollect.getVideoId(), operator.getId());
+                    i++;
+                    continue;
+                }
                 video.setVideo(videoBaseUrl + video.getVideo());
 
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
@@ -129,7 +137,15 @@ public class MediaController {
                         .build()));
                 i++;
             } else {
-                Article article = articleApp.getById(articleCollect.getArticleId());
+                Article article;
+                try {
+                    article = articleApp.getById(articleCollect.getArticleId());
+                } catch (NotFoundException e) {
+                    articleCollectApp.unCollect(articleCollect.getArticleId(), operator.getId());
+                    j++;
+                    continue;
+                }
+
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
@@ -144,7 +160,13 @@ public class MediaController {
         if (i < videoCollects.size()) {
             for (;i < videoCollects.size();i++) {
                 VideoCollect videoCollect = videoCollects.get(i);
-                Video video = videoApp.getById(videoCollect.getVideoId());
+                Video video;
+                try {
+                    video = videoApp.getById(videoCollect.getVideoId());
+                } catch (NotFoundException e) {
+                    videoCollectApp.unCollect(videoCollect.getVideoId(), operator.getId());
+                    continue;
+                }
                 video.setVideo(videoBaseUrl + video.getVideo());
 
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
@@ -159,7 +181,13 @@ public class MediaController {
         if (j < articleCollects.size()) {
             for (;j < articleCollects.size();j++) {
                 ArticleCollect articleCollect = articleCollects.get(j);
-                Article article = articleApp.getById(articleCollect.getArticleId());
+                Article article;
+                try {
+                    article = articleApp.getById(articleCollect.getArticleId());
+                } catch (NotFoundException e) {
+                    articleCollectApp.unCollect(articleCollect.getArticleId(), operator.getId());
+                    continue;
+                }
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
