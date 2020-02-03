@@ -26,9 +26,19 @@ public class ErrorController extends BasicErrorController {
     @RequestMapping
     public ResponseEntity error(HttpServletRequest request) {
         Map<String, Object> body = getErrorAttributes(request, isIncludeStackTrace(request, MediaType.ALL));
-        HttpStatus status = getStatus(request);
+        HttpStatus status = HttpStatus.OK;
         if (!Strings.isNullOrEmpty((String) body.get("message")) && body.get("message").equals("请先登录")) {
-            status = HttpStatus.OK;
+            return ResponseEntity.status(status)
+                    .body(Result.builder()
+                            .code(0)
+                            .msg((String) body.get("message"))
+                            .build());
+        } else if (!Strings.isNullOrEmpty((String) body.get("message")) && body.get("message").equals("好久不见哟，重新登录下吧")) {
+            return ResponseEntity.status(status)
+                    .body(Result.builder()
+                            .code(11011)
+                            .msg((String) body.get("message"))
+                            .build());
         }
 
         return ResponseEntity.status(status)

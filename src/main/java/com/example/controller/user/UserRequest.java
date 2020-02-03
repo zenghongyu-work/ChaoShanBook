@@ -35,12 +35,4 @@ public class UserRequest {
         @ApiModelProperty("签名")
         private String signature;
     }
-
-    @Data
-    public static class UpdateIcon {
-
-        @ApiModelProperty("头像")
-        private MultipartFile icon;
-    }
-
 }

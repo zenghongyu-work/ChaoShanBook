@@ -141,6 +141,18 @@ public class UserController {
                 .build();
     }
 
+    @ApiOperation(value = "更新Token")
+    @PostMapping("/update/token")
+    public Result updateToken() {
+        User user = userApp.getById(operator.getId());
+        userApp.updateToken(user);
+
+        return Result.builder()
+                .msg("更新成功")
+                .data(Token.builder().token(user.getToken()).build())
+                .build();
+    }
+
     @ApiOperation(value = "关注用户")
     @PostMapping("/follow")
     public Result follow(@RequestBody FollowerRequest.Follow request) {

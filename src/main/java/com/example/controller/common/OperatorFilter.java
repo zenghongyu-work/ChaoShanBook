@@ -1,8 +1,10 @@
 package com.example.controller.common;
 
+import com.example.domain.execption.ExpiredTokenException;
 import com.example.domain.execption.UnauthorizedException;
 import com.example.infrastructure.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -27,7 +29,8 @@ public class OperatorFilter implements Filter {
             "POST /chaoshanbook/video/collect", "POST /chaoshanbook/article/collect",
             "GET /chaoshanbook/media/collect", "GET /chaoshanbook/media/create",
             "POST /chaoshanbook/comment", "DELETE /chaoshanbook/comment/{id}",
-            "GET /chaoshanbook/user/is-follow");
+            "GET /chaoshanbook/user/is-follow", "POST /chaoshanbook/user/update/token",
+            "POST /chaoshanbook/user/update", "POST /chaoshanbook/user/update/icon");
 
     @Autowired
     private Operator operator;
@@ -38,7 +41,12 @@ public class OperatorFilter implements Filter {
 
         String token = httpServletRequest.getHeader(TOKEN);
         if (StringUtils.isNotBlank(token)) {
-            Claims claims = JwtUtils.parseJWT(token);
+            Claims claims;
+            try {
+                claims = JwtUtils.parseJWT(token);
+            } catch (ExpiredJwtException e) {
+                throw new ExpiredTokenException();
+            }
             operator.setId(Integer.parseInt(claims.getSubject()));
         }
 

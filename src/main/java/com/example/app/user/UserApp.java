@@ -30,4 +30,8 @@ public class UserApp {
         return userService.getById(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public User updateToken(User user) {
+        return userService.updateToken(user);
+    }
 }

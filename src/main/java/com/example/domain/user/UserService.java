@@ -35,6 +35,9 @@ public class UserService {
             throw new BusinessException("用户不存在或密码不正确");
         }
 
+        user.setToken(JwtUtils.createJWT(String.valueOf(user.getId())));
+        userRepository.updateToken(user);
+
         return user;
     }
 
@@ -64,5 +67,10 @@ public class UserService {
     public User decreaseFanCount(User user) {
         user.setFanCount(user.getFanCount() - 1 < 0 ? 0 : user.getFanCount() - 1);
         return userRepository.update(user);
+    }
+
+    public User updateToken(User user) {
+        user.setToken(JwtUtils.createJWT(String.valueOf(user.getId())));
+        return userRepository.updateToken(user);
     }
 }
