@@ -76,6 +76,10 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public List<Article> listRandom(Integer size) {
         List<ArticleDbo> articleDbos = articleMapper.listRandom(size);
+        return toModules(articleDbos);
+    }
+
+    private List<Article> toModules(List<ArticleDbo> articleDbos) {
         if (CollectionUtils.isEmpty(articleDbos)) {
             return Collections.emptyList();
         } else {
@@ -99,13 +103,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         example.setOrderByClause("create_at desc");
         List<ArticleDbo> articleDbos = articleMapper.selectByExample(example);
 
-        if (CollectionUtils.isEmpty(articleDbos)) {
-            return Collections.emptyList();
-        } else {
-            return articleDbos.stream()
-                    .map(articleDbo -> articleDbo.toModule(Article.class))
-                    .collect(Collectors.toList());
-        }
+        return toModules(articleDbos);
     }
 
 }

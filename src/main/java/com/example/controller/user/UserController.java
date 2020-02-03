@@ -219,7 +219,11 @@ public class UserController {
                 throw new BusinessException("用户列表非法");
             }
 
-            results.add(followerApp.isFollow(Integer.parseInt(user), operator.getId()) ? "1" : "0");
+            if (Integer.parseInt(user) == operator.getId()) {
+                results.add("2");
+            } else {
+                results.add(followerApp.isFollow(Integer.parseInt(user), operator.getId()) ? "1" : "0");
+            }
         }
 
         return Result.builder()
