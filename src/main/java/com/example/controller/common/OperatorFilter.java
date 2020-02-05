@@ -27,7 +27,6 @@ public class OperatorFilter implements Filter {
             "PUT /chaoshanbook/user", "POST /chaoshanbook/user/follow", "DELETE /chaoshanbook/user/follow",
             "GET /chaoshanbook/user/my-followers", "GET /chaoshanbook/user/users-follow",
             "POST /chaoshanbook/video/collect", "POST /chaoshanbook/article/collect",
-            "GET /chaoshanbook/media/collect", "GET /chaoshanbook/media/create",
             "POST /chaoshanbook/comment", "DELETE /chaoshanbook/comment/{id}",
             "GET /chaoshanbook/user/is-follow", "POST /chaoshanbook/user/update/token",
             "POST /chaoshanbook/user/update", "POST /chaoshanbook/user/update/icon");

@@ -104,11 +104,11 @@ public class MediaController {
                 .build();
     }
 
-    @ApiOperation(value = "获取我的收藏列表")
+    @ApiOperation(value = "获取收藏列表")
     @GetMapping("/collect")
-    public Result listCollect() {
-        List<VideoCollect> videoCollects = videoCollectApp.listByUser(operator.getId());
-        List<ArticleCollect> articleCollects = articleCollectApp.listByUser(operator.getId());
+    public Result listCollect(@RequestParam Integer id) {
+        List<VideoCollect> videoCollects = videoCollectApp.listByUser(id);
+        List<ArticleCollect> articleCollects = articleCollectApp.listByUser(id);
 
         List<MediaResponse.MediaDetail> medias = new ArrayList<>();
         int i;
@@ -123,7 +123,7 @@ public class MediaController {
                 try {
                     video = videoApp.getById(videoCollect.getVideoId());
                 } catch (NotFoundException e) {
-                    videoCollectApp.unCollect(videoCollect.getVideoId(), operator.getId());
+                    videoCollectApp.unCollect(videoCollect.getVideoId(), id);
                     i++;
                     continue;
                 }
@@ -141,7 +141,7 @@ public class MediaController {
                 try {
                     article = articleApp.getById(articleCollect.getArticleId());
                 } catch (NotFoundException e) {
-                    articleCollectApp.unCollect(articleCollect.getArticleId(), operator.getId());
+                    articleCollectApp.unCollect(articleCollect.getArticleId(), id);
                     j++;
                     continue;
                 }
@@ -164,7 +164,7 @@ public class MediaController {
                 try {
                     video = videoApp.getById(videoCollect.getVideoId());
                 } catch (NotFoundException e) {
-                    videoCollectApp.unCollect(videoCollect.getVideoId(), operator.getId());
+                    videoCollectApp.unCollect(videoCollect.getVideoId(), id);
                     continue;
                 }
                 video.setVideo(videoBaseUrl + video.getVideo());
@@ -185,7 +185,7 @@ public class MediaController {
                 try {
                     article = articleApp.getById(articleCollect.getArticleId());
                 } catch (NotFoundException e) {
-                    articleCollectApp.unCollect(articleCollect.getArticleId(), operator.getId());
+                    articleCollectApp.unCollect(articleCollect.getArticleId(), id);
                     continue;
                 }
                 article.getPictures().stream().forEach(picture -> picture.setPath(pictureBaseUrl + picture.getPath()));
@@ -205,9 +205,9 @@ public class MediaController {
 
     @ApiOperation(value = "获取我的创建列表")
     @GetMapping("/create")
-    public Result listCreate() {
-        List<Video> videos = videoApp.listInCreateBy(Arrays.asList(operator.getId()));
-        List<Article> articles = articleApp.listInCreateBy(Arrays.asList(operator.getId()));
+    public Result listCreate(@RequestParam Integer id) {
+        List<Video> videos = videoApp.listInCreateBy(Arrays.asList(id));
+        List<Article> articles = articleApp.listInCreateBy(Arrays.asList(id));
 
         List<MediaResponse.MediaDetail> medias = new ArrayList<>();
         int i;
@@ -224,7 +224,7 @@ public class MediaController {
                         .builder()
                         .type(VIDEO)
                         .media(video)
-                        .isCollect(videoCollectApp.isCollect(video.getId(), operator.getId()) ? "1" : "0")
+                        .isCollect(videoCollectApp.isCollect(video.getId(), id) ? "1" : "0")
                         .build()));
                 i++;
             } else {
@@ -233,7 +233,7 @@ public class MediaController {
                         .builder()
                         .type(ARTICLE)
                         .media(article)
-                        .isCollect(articleCollectApp.isCollect(article.getId(), operator.getId()) ? "1" : "0")
+                        .isCollect(articleCollectApp.isCollect(article.getId(), id) ? "1" : "0")
                         .build()));
                 j++;
             }
@@ -248,7 +248,7 @@ public class MediaController {
                         .builder()
                         .type(VIDEO)
                         .media(video)
-                        .isCollect(videoCollectApp.isCollect(video.getId(), operator.getId()) ? "1" : "0")
+                        .isCollect(videoCollectApp.isCollect(video.getId(), id) ? "1" : "0")
                         .build()));
             }
         }
@@ -261,7 +261,7 @@ public class MediaController {
                         .builder()
                         .type(ARTICLE)
                         .media(article)
-                        .isCollect(articleCollectApp.isCollect(article.getId(), operator.getId()) ? "1" : "0")
+                        .isCollect(articleCollectApp.isCollect(article.getId(), id) ? "1" : "0")
                         .build()));
             }
         }
