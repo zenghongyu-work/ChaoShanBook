@@ -55,8 +55,8 @@ public class CommentController {
     }
 
     @ApiOperation(value = "获取资源下的评论")
-    @GetMapping("/relationId/{relationId}/type/{type}")
-    public Result listTopByRelationIdAndType(@PathVariable Integer relationId, @PathVariable String type) {
+    @GetMapping
+    public Result listTopByRelationIdAndType(@RequestParam Integer relationId, @RequestParam String type) {
         return Result.builder()
                 .data(commentApp.listTopByRelationIdAndType(relationId, type).stream()
                         .map(comment -> handleIcon(comment)))
