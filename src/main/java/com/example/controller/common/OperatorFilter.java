@@ -1,7 +1,10 @@
 package com.example.controller.common;
 
+import com.example.app.user.UserApp;
 import com.example.domain.execption.ExpiredTokenException;
+import com.example.domain.execption.InvalidTokenException;
 import com.example.domain.execption.UnauthorizedException;
+import com.example.domain.user.User;
 import com.example.infrastructure.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -34,6 +37,9 @@ public class OperatorFilter implements Filter {
     @Autowired
     private Operator operator;
 
+    @Autowired
+    private UserApp userApp;
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -46,6 +52,12 @@ public class OperatorFilter implements Filter {
             } catch (ExpiredJwtException e) {
                 throw new ExpiredTokenException();
             }
+
+            User user = userApp.getById(Integer.parseInt(claims.getSubject()));
+            if (!token.equals(user.getToken())) {
+                throw new InvalidTokenException();
+            }
+
             operator.setId(Integer.parseInt(claims.getSubject()));
         }
 

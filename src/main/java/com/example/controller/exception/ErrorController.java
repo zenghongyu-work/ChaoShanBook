@@ -33,7 +33,7 @@ public class ErrorController extends BasicErrorController {
                             .code(0)
                             .msg((String) body.get("message"))
                             .build());
-        } else if (!Strings.isNullOrEmpty((String) body.get("message")) && body.get("message").equals("好久不见哟，重新登录下吧")) {
+        } else if (!Strings.isNullOrEmpty((String) body.get("message")) && (body.get("message").equals("好久不见哟，重新登录下吧") || body.get("message").equals("Token已失效"))) {
             return ResponseEntity.status(status)
                     .body(Result.builder()
                             .code(11011)
