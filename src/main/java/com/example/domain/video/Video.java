@@ -24,6 +24,9 @@ public class Video implements Media {
     private String video = "";
 
     @Builder.Default
+    private String snapshot = "";
+
+    @Builder.Default
     private Integer praiseCount = 0;
 
     @Builder.Default

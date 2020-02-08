@@ -41,6 +41,7 @@ public class VideoController {
         video.setCreateBy(operator.getId());
         video.setCreateAt(DataUtils.getCurrentDataTime());
         video.setVideo(UploadUtils.uploadVideo((request.getVideo())));
+        video.setSnapshot(UploadUtils.snapshotVideo(video.getVideo()));
         videoApp.add(video);
         return Result.builder()
                 .data(video)

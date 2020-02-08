@@ -80,6 +80,7 @@ public class MediaController {
         List<MediaResponse.MediaDetail> medias = new ArrayList<>(pageSize);
         medias.addAll(videos.stream().map(video -> {
             video.setVideo(videoBaseUrl + video.getVideo());
+            video.setSnapshot(pictureBaseUrl + video.getSnapshot());
             return mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                     .builder()
                     .type(VIDEO)
@@ -108,10 +109,10 @@ public class MediaController {
     @GetMapping("/collect")
     public Result listCollect(@RequestParam(required = false) Integer id) {
         Integer actualId;
-        if (operator.getId() != null && operator.getId() != 0) {
-            actualId = operator.getId();
-        } else {
+        if (id != null && id != 0) {
             actualId = id;
+        } else {
+            actualId = operator.getId();
         }
 
         List<VideoCollect> videoCollects = videoCollectApp.listByUser(actualId);
@@ -135,7 +136,7 @@ public class MediaController {
                     continue;
                 }
                 video.setVideo(videoBaseUrl + video.getVideo());
-
+                video.setSnapshot(pictureBaseUrl + video.getSnapshot());
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
@@ -175,7 +176,7 @@ public class MediaController {
                     continue;
                 }
                 video.setVideo(videoBaseUrl + video.getVideo());
-
+                video.setSnapshot(pictureBaseUrl + video.getSnapshot());
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
@@ -214,10 +215,10 @@ public class MediaController {
     @GetMapping("/create")
     public Result listCreate(@RequestParam(required = false) Integer id) {
         Integer actualId;
-        if (operator.getId() != null && operator.getId() != 0) {
-            actualId = operator.getId();
-        } else {
+        if (id != null && id != 0) {
             actualId = id;
+        } else {
+            actualId = operator.getId();
         }
 
         List<Video> videos = videoApp.listInCreateBy(Arrays.asList(actualId));
@@ -233,7 +234,7 @@ public class MediaController {
 
             if (StringUtils.compare(video.getCreateAt(), article.getCreateAt()) > 0) {
                 video.setVideo(videoBaseUrl + video.getVideo());
-
+                video.setSnapshot(pictureBaseUrl + video.getSnapshot());
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)
@@ -257,7 +258,7 @@ public class MediaController {
             for (;i < videos.size();i++) {
                 Video video = videos.get(i);
                 video.setVideo(videoBaseUrl + video.getVideo());
-
+                video.setSnapshot(pictureBaseUrl + video.getSnapshot());
                 medias.add(mediaAssembler.assemblerUser(MediaResponse.MediaDetail
                         .builder()
                         .type(VIDEO)

@@ -21,6 +21,7 @@ public class VideoDbo extends BaseDbo {
     private String title;
     private String content;
     private String video;
+    private String snapshot;
     private Integer praiseCount;
     private Integer createBy;
     private String createAt;
