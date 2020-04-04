@@ -5,6 +5,7 @@ import com.example.domain.execption.BusinessException;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.FrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -83,12 +84,15 @@ public class UploadUtils {
             File picFile = new File(pictureFilePath, pictureName);
             ImageIO.write(srcImage, "jpg", picFile);
 
-            ff.stop();
-
             return pictureName;
         } catch (IOException e) {
             e.printStackTrace();
             throw new BusinessException(String.format("截取视频帧失败：%s", e.getMessage()));
+        } finally {
+            try {
+                ff.stop();
+            } catch (FrameGrabber.Exception e) {
+            }
         }
     }
 

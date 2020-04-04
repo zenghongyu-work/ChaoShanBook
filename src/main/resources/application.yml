@@ -22,6 +22,9 @@ server:
     multipart:
       max-file-size: -1
       max-request-size: -1
+  tomcat:
+    maxFileSize: 1024
+    maxRequestSize: 3072
 
 mybatis:
   # 配置mapper放置的位置，类路径下的mapper/下的所有Mapper.xml结尾的文件
